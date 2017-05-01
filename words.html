@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+<head>
+    <title>Words</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    <script type="text/javascript">
+        // TODO: your JavaScript goes here
+        
+        function submit() {
+            
+            var word = $("#inputWord").val();
+            
+            $.ajax({
+                url: "http://localhost:4444/palindrome",
+                type: "GET",
+                data: "word=" + word,
+                success: function(response){ 
+                    
+                    if (response === "yes") {
+                        
+                        $("#palindrome").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " is a palindrome.</h4>");
+                        
+                        
+                    } else {
+                        $("#palindrome").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " is not a palindrome.</h4>");
+                    }
+                    $("#palindrome-result").css("display", "block");
+                },
+                error: function(e){  
+                    alert("error")
+                } 
+            });
+            $.ajax({
+                url: "http://localhost:4444/duplicates",
+                type: "GET",
+                data: "word=" + word,
+                success: function(response){ 
+                    if (response === "yes") {
+                        $("#duplicates").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " contains duplicate characters.</h4>");
+                    } else {
+                        $("#duplicates").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " does not contain duplicate characters.</h4>");
+                    }
+                    $("#duplicates-result").css("display", "block");
+                    
+                },
+                error: function(e){  
+                    alert("error")
+                } 
+            });
+            $.ajax({
+                url: "http://localhost:4444/reverse",
+                type: "GET",
+                data: "word=" + word,
+                success: function(response){ 
+                    $("#reverse").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " reversed is " + response + ".</h4>");
+                    $("#reverse-result").css("display", "block");
+                },
+                error: function(e){  
+                    alert("error")
+                } 
+            });
+            
+        }
+        
+    </script>
+</head>
+<body>
+    <!-- HTML goes here to accept input word and display results from the 3 AJAX calls to http://localhost:4444 -->
+    <div class="container" id="main">
+        <h1>Havalo Coding Challenge</h1>
+        <br>
+        <div class="col-md-6 col-md-offset-3">
+            <div class="input-group">
+                <input type="text" class="form-control" name="word" id="inputWord" placeholder="Enter a word">
+                <span class="input-group-btn">
+                    <button id="submits" onclick="submit()" class="btn btn-default" type="button">Submit</button>
+                </span>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div id="palindrome-result" class="col-md-6 col-md-offset-3 results panel panel-default">
+            <div id="palindrome" class="panel-body"></div>
+        </div>
+        <div id="duplicates-result" class="col-md-6 col-md-offset-3 results panel panel-default">
+            <div id="duplicates" class="panel-body"></div>
+        </div>
+        <div id="reverse-result" class="col-md-6 col-md-offset-3 results panel panel-default">
+            <div id="reverse" class="panel-body"></div>
+        </div>
+    </div>
+    
+</body>
+<style>
+    #main {
+        text-align: center;
+    }
+    
+    .results {
+        display: none;
+        background-color: #1e90ff;
+        -webkit-transition-property: background-color, color, border-color;
+        -moz-transition-property: background-color, color, border-color;
+        -o-transition-property: background-color, color, border-color;
+        transition-property: background-color, color, border-color;
+        -webkit-transition-duration: 0.25s;
+        -moz-transition-duration: 0.25s;
+        -o-transition-duration: 0.25s;
+        transition-duration: 0.25s;
+        -webkit-transition-timing-function: linear;
+        -moz-transition-timing-function: linear;
+        -o-transition-timing-function: linear;
+        transition-timing-function: linear;
+        color: white;
+    }
+    
+    .results:hover {
+        background-color: #49a4ff;
+    }
+    
+    
+</style>
+</html>
