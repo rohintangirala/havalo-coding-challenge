@@ -20,6 +20,8 @@ public final class HavaloCodingChallenge {
      */
     public static boolean isPalindrome(String word) {
         // TODO: your java code here!
+        word = word.replaceAll("%20", " ");
+        word = word.replaceAll("%22", "\"");
         int length = word.length();
 
         for (int i = 0; i < length/2; i++) {
@@ -40,6 +42,8 @@ public final class HavaloCodingChallenge {
      */
     public static boolean containsDuplicateCharacters(String word) {
         // TODO: your java code here!
+        word = word.replaceAll("%20", " ");
+        word = word.replaceAll("%22", "\"");
         Map<Character, Integer> map = new HashMap<Character, Integer>();
         for (int i = 0; i < word.length(); i++) {
             if (map.containsKey(word.charAt(i))) {
@@ -60,6 +64,9 @@ public final class HavaloCodingChallenge {
      */
     public static String reverseWord(String word) {
         // TODO: your java code here!
+        word = word.replaceAll("%20", " ");
+        word = word.replaceAll("%22", "\"");
+        
         String reversedWord = "";
         for (int i = word.length()-1; i >= 0; i--) {
             reversedWord = reversedWord + word.substring(i, i+1);
@@ -156,7 +163,7 @@ public final class HavaloCodingChallenge {
                     // http://localhost:4444/palindrome?word=someword
 
                     String word = queryParameters.get("word");
-
+                    
                     if (isPalindrome(word)) {
                         sendString(out, "yes");
                     } else {

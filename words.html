@@ -15,8 +15,8 @@
         // TODO: your JavaScript goes here
         
         function submit() {
-            
-            var word = $("#inputWord").val();
+            if ($("#inputWord").val() != "") {
+                var word = $("#inputWord").val().toLowerCase();
             
             $.ajax({
                 url: "http://localhost:4444/palindrome",
@@ -67,6 +67,8 @@
                     alert("error")
                 } 
             });
+            }
+            
             
         }
         
