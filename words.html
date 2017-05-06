@@ -2,39 +2,51 @@
 <html>
 <head>
     <title>Words</title>
-    <!-- Latest compiled and minified CSS -->
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- Google Fonts -->
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- jQuery -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-    
+
+    <!-- Greensock GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.18.5/TweenMax.min.js"></script>
+
     <script type="text/javascript">
         // TODO: your JavaScript goes here
-        
+
+        $(document).ready(function(e) {
+          let title = $("#title");
+          let textField = $("#textField");
+          TweenLite.from(title, 0.75, {delay:.25, opacity: 0});
+          TweenLite.from(textField, 0.75, {delay:.75, opacity: 0});
+
+        });
+
         //Call submit function if Enter key is pressed while input field is in focus
         $(document).keypress(function(e) {
             if ((e.which == 13) && ($("#inputWord").is(":focus"))) {
                 submit();
             }
-        })
-        
+        });
+
         function submit() {
             //Do not do anything if the input field is empty
             if ($("#inputWord").val() != "") {
                 //Convert all letters to lowercase to avoid case issues
                 var word = $("#inputWord").val().toLowerCase();
-            
+
                 //First AJAX call to get palindrome information
                 $.ajax({
                     url: "http://localhost:4444/palindrome",
                     type: "GET",
                     data: "word=" + encodeURIComponent(word), //encode word in UTF-8 to accomodate special characters
-                    success: function(response){ 
+                    success: function(response){
                         $("#palindrome-result").hide();
-                        
+
                         //Based on response, update HTML to display results to the user
                         if (response === "yes") {
                             $("#palindrome").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " is a palindrome.</h4>");
@@ -44,63 +56,63 @@
 
                         $("#palindrome-result").slideDown("slow");
                     },
-                    error: function(e){  
+                    error: function(e){
                         alert("error")
-                    } 
+                    }
                 });
-                
+
                 //Second AJAX call to get duplicate character information
                 $.ajax({
                     url: "http://localhost:4444/duplicates",
                     type: "GET",
                     data: "word=" + encodeURIComponent(word), //encode word in UTF-8 to accomodate special characters
-                    success: function(response){ 
+                    success: function(response){
                         $("#duplicates-result").hide();
-                        
+
                         //Based on response, update HTML to display results to the user
                         if (response === "yes") {
                             $("#duplicates").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " contains duplicate characters.</h4>");
                         } else {
                             $("#duplicates").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " does not contain duplicate characters.</h4>");
                         }
-                        
+
                         $("#duplicates-result").delay(200).slideDown("slow");
                     },
-                    error: function(e){  
+                    error: function(e){
                         alert("error")
-                    } 
+                    }
                 });
-                
+
                 //Third AJAX call to get reversed word
                 $.ajax({
                     url: "http://localhost:4444/reverse",
                     type: "GET",
                     data: "word=" + encodeURIComponent(word), //encode word in UTF-8 to accomodate special characters
-                    success: function(response){ 
+                    success: function(response){
                         $("#reverse-result").hide();
-                        
+
                         //Update HTML to display reversed word to the user
                         $("#reverse").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " reversed is the following: " + response + "</h4>");
-                        
+
                         $("#reverse-result").delay(400).slideDown("slow");
                     },
-                    error: function(e){  
+                    error: function(e){
                         alert("error")
-                    } 
+                    }
                 });
             }
-            
-            
+
+
         }
-        
+
     </script>
 </head>
 <body>
     <!-- HTML goes here to accept input word and display results from the 3 AJAX calls to http://localhost:4444 -->
     <div class="container" id="main">
-        <h1 id="title">Havalo Coding Challenge</h1>
+        <h1 id="title">Words</h1>
         <br>
-        <div class="col-md-6 col-md-offset-3">
+        <div id="textField" class="col-md-6 col-md-offset-3">
             <div class="input-group">
                 <input type="text" class="form-control" name="word" id="inputWord" placeholder="Enter a word">
                 <span class="input-group-btn">
@@ -121,25 +133,26 @@
             <div id="reverse" class="panel-body"></div>
         </div>
     </div>
-    
-    
+
+
 </body>
 <style>
     body {
         background-color: #252222;
     }
-    
+
     #main {
         text-align: center;
-        
+
     }
-    
+
     #title {
         color: #ffffff;
         font-family: 'HelveticaNeue-UltraLight', 'Helvetica Neue UltraLight', 'Open Sans', sans-serif;
         font-size: 3.5em;
+
     }
-    
+
     .results {
         display: none;
         background-color: #222ab7;
@@ -158,11 +171,11 @@
         color: #ffffff;
         font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', sans-serif;
     }
-    
+
     .results:hover {
         background-color: #2d38ff;
     }
-    
+
     #submits {
         color: #ffffff;
         background-color: #222ab7;
@@ -181,11 +194,11 @@
         border-style: solid;
         border-color: #dcdcdc;
     }
-    
+
     #submits:hover {
         background-color: #2d38ff;
     }
-    
-    
+
+
 </style>
 </html>
