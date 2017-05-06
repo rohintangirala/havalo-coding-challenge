@@ -14,6 +14,12 @@
     <script type="text/javascript">
         // TODO: your JavaScript goes here
         
+        $(document).keypress(function(e) {
+            if ((e.which == 13) && ($("#inputWord").is(":focus"))) {
+                submit();
+            }
+        })
+        
         function submit() {
             //Do not do anything if the input field is empty
             if ($("#inputWord").val() != "") {
