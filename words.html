@@ -4,76 +4,83 @@
     <title>Words</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-
-    <!-- Optional theme 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">-->
     
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+    
     <script type="text/javascript">
         // TODO: your JavaScript goes here
         
         function submit() {
+            //Do not do anything if the input field is empty
             if ($("#inputWord").val() != "") {
+                //Convert all letters to lowercase to avoid case issues
                 var word = $("#inputWord").val().toLowerCase();
             
-            $.ajax({
+                //First AJAX call to get palindrome information
+                $.ajax({
+                    url: "http://localhost:4444/palindrome",
+                    type: "GET",
+                    data: "word=" + encodeURIComponent(word), //encode word in UTF-8 to accomodate special characters
+                    success: function(response){ 
+                        $("#palindrome-result").hide();
+                        
+                        //Based on response, update HTML to display results to the user
+                        if (response === "yes") {
+                            $("#palindrome").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " is a palindrome.</h4>");
+                        } else {
+                            $("#palindrome").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " is not a palindrome.</h4>");
+                        }
+
+                        $("#palindrome-result").slideDown("slow");
+                    },
+                    error: function(e){  
+                        alert("error")
+                    } 
+                });
                 
-                url: "http://localhost:4444/palindrome",
-                type: "GET",
-                data: "word=" + encodeURIComponent(word),
-                success: function(response){ 
-                    $("#palindrome-result").hide()
-                    
-                    if (response === "yes") {
+                //Second AJAX call to get duplicate character information
+                $.ajax({
+                    url: "http://localhost:4444/duplicates",
+                    type: "GET",
+                    data: "word=" + encodeURIComponent(word), //encode word in UTF-8 to accomodate special characters
+                    success: function(response){ 
+                        $("#duplicates-result").hide();
                         
-                        $("#palindrome").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " is a palindrome.</h4>");
+                        //Based on response, update HTML to display results to the user
+                        if (response === "yes") {
+                            $("#duplicates").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " contains duplicate characters.</h4>");
+                        } else {
+                            $("#duplicates").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " does not contain duplicate characters.</h4>");
+                        }
                         
+                        $("#duplicates-result").delay(200).slideDown("slow");
+                    },
+                    error: function(e){  
+                        alert("error")
+                    } 
+                });
+                
+                //Third AJAX call to get reversed word
+                $.ajax({
+                    url: "http://localhost:4444/reverse",
+                    type: "GET",
+                    data: "word=" + encodeURIComponent(word), //encode word in UTF-8 to accomodate special characters
+                    success: function(response){ 
+                        $("#reverse-result").hide();
                         
-                    } else {
-                        $("#palindrome").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " is not a palindrome.</h4>");
-                    }
-                    
-                    $("#palindrome-result").slideDown("slow");
-                },
-                error: function(e){  
-                    alert("error")
-                } 
-            });
-            $.ajax({
-                url: "http://localhost:4444/duplicates",
-                type: "GET",
-                data: "word=" + encodeURIComponent(word),
-                success: function(response){ 
-                    $("#duplicates-result").hide()
-                    if (response === "yes") {
-                        $("#duplicates").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " contains duplicate characters.</h4>");
-                    } else {
-                        $("#duplicates").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " does not contain duplicate characters.</h4>");
-                    }
-                    $("#duplicates-result").delay(200).slideDown("slow");
-                    
-                },
-                error: function(e){  
-                    alert("error")
-                } 
-            });
-            $.ajax({
-                url: "http://localhost:4444/reverse",
-                type: "GET",
-                data: "word=" + encodeURIComponent(word),
-                success: function(response){ 
-                    $("#reverse-result").hide()
-                    $("#reverse").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " reversed is " + response + ".</h4>");
-                    $("#reverse-result").delay(400).slideDown("slow");
-                },
-                error: function(e){  
-                    alert("error")
-                } 
-            });
+                        //Update HTML to display reversed word to the user
+                        $("#reverse").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " reversed is " + response + ".</h4>");
+                        
+                        $("#reverse-result").delay(400).slideDown("slow");
+                    },
+                    error: function(e){  
+                        alert("error")
+                    } 
+                });
             }
             
             

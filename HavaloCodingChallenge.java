@@ -21,19 +21,25 @@ public final class HavaloCodingChallenge {
      */
     public static boolean isPalindrome(String word) {
         // TODO: your java code here!
-        
+
+        //Attempt to decode word string in UTF-8 character encoding to compensate for special characters
         try {
             word = java.net.URLDecoder.decode(word, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new AssertionError("UTF-8 is unknown");
-            
         }
+
+        
         int length = word.length();
 
+        //Iterate through characters in first half of word
         for (int i = 0; i < length/2; i++) {
+            //Successively compare character in first half of word to second half
+            //If the characters are different, the word is not a palindrome
             if (!(word.substring(i, i+1).equals(word.substring(length-i-1, length-i))))
                 return false;
         }
+
         return true;
     }
 
@@ -49,20 +55,27 @@ public final class HavaloCodingChallenge {
     public static boolean containsDuplicateCharacters(String word) {
         // TODO: your java code here!
         
+        //Attempt to decode word string in UTF-8 character encoding to compensate for special characters
         try {
             word = java.net.URLDecoder.decode(word, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new AssertionError("UTF-8 is unknown");
-            
         }
+
+         
         Map<Character, Integer> map = new HashMap<Character, Integer>();
+
+        //Iterate through characters of the word
         for (int i = 0; i < word.length(); i++) {
+            //Use map to determine if the current character has been encountered already in the word
             if (map.containsKey(word.charAt(i))) {
                 return true;
             } else {
+            //Insert character into the map
                 map.put(word.charAt(i), 0);
             }
         }
+
         return false;
     }
 
@@ -75,15 +88,19 @@ public final class HavaloCodingChallenge {
      */
     public static String reverseWord(String word) {
         // TODO: your java code here!
+        
+        //Attempt to decode word string in UTF-8 character encoding to compensate for special characters
         try {
             word = java.net.URLDecoder.decode(word, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new AssertionError("UTF-8 is unknown");
-            
         }
         
         String reversedWord = "";
+
+        //Iterate backwards through the characters in the word
         for (int i = word.length()-1; i >= 0; i--) {
+            //Successively build the reversed word by adding the current character
             reversedWord = reversedWord + word.substring(i, i+1);
         }
 
