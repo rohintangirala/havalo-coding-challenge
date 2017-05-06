@@ -57,7 +57,7 @@
                         $("#palindrome-result").slideDown("slow");
                     },
                     error: function(e){
-                        alert("error")
+                        alert("Error: Unable to connect to server. (Palindrome AJAX call failed)");
                     }
                 });
 
@@ -79,7 +79,7 @@
                         $("#duplicates-result").delay(200).slideDown("slow");
                     },
                     error: function(e){
-                        alert("error")
+                        alert("Error: Unable to connect to server. (Duplicates AJAX call failed)");
                     }
                 });
 
@@ -97,7 +97,7 @@
                         $("#reverse-result").delay(400).slideDown("slow");
                     },
                     error: function(e){
-                        alert("error")
+                        alert("Error: Unable to connect to server. (Reverse AJAX call failed)");
                     }
                 });
             }
