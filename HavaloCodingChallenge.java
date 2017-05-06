@@ -29,7 +29,7 @@ public final class HavaloCodingChallenge {
             throw new AssertionError("UTF-8 is unknown");
         }
 
-        
+
         int length = word.length();
 
         //Iterate through characters in first half of word
@@ -54,7 +54,7 @@ public final class HavaloCodingChallenge {
      */
     public static boolean containsDuplicateCharacters(String word) {
         // TODO: your java code here!
-        
+
         //Attempt to decode word string in UTF-8 character encoding to compensate for special characters
         try {
             word = java.net.URLDecoder.decode(word, "UTF-8");
@@ -62,7 +62,7 @@ public final class HavaloCodingChallenge {
             throw new AssertionError("UTF-8 is unknown");
         }
 
-         
+
         Map<Character, Integer> map = new HashMap<Character, Integer>();
 
         //Iterate through characters of the word
@@ -88,14 +88,14 @@ public final class HavaloCodingChallenge {
      */
     public static String reverseWord(String word) {
         // TODO: your java code here!
-        
+
         //Attempt to decode word string in UTF-8 character encoding to compensate for special characters
         try {
             word = java.net.URLDecoder.decode(word, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new AssertionError("UTF-8 is unknown");
         }
-        
+
         String reversedWord = "";
 
         //Iterate backwards through the characters in the word
@@ -195,7 +195,7 @@ public final class HavaloCodingChallenge {
                     // http://localhost:4444/palindrome?word=someword
 
                     String word = queryParameters.get("word");
-                    
+
                     if (isPalindrome(word)) {
                         sendString(out, "yes");
                     } else {
