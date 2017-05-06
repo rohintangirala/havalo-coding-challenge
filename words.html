@@ -5,8 +5,10 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- Optional theme 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">-->
+    
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300' rel='stylesheet' type='text/css'>
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -19,10 +21,12 @@
                 var word = $("#inputWord").val().toLowerCase();
             
             $.ajax({
+                
                 url: "http://localhost:4444/palindrome",
                 type: "GET",
-                data: "word=" + word,
+                data: "word=" + encodeURIComponent(word),
                 success: function(response){ 
+                    $("#palindrome-result").hide()
                     
                     if (response === "yes") {
                         
@@ -32,7 +36,8 @@
                     } else {
                         $("#palindrome").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " is not a palindrome.</h4>");
                     }
-                    $("#palindrome-result").css("display", "block");
+                    
+                    $("#palindrome-result").slideDown("slow");
                 },
                 error: function(e){  
                     alert("error")
@@ -41,14 +46,15 @@
             $.ajax({
                 url: "http://localhost:4444/duplicates",
                 type: "GET",
-                data: "word=" + word,
+                data: "word=" + encodeURIComponent(word),
                 success: function(response){ 
+                    $("#duplicates-result").hide()
                     if (response === "yes") {
                         $("#duplicates").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " contains duplicate characters.</h4>");
                     } else {
                         $("#duplicates").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " does not contain duplicate characters.</h4>");
                     }
-                    $("#duplicates-result").css("display", "block");
+                    $("#duplicates-result").delay(200).slideDown("slow");
                     
                 },
                 error: function(e){  
@@ -58,10 +64,11 @@
             $.ajax({
                 url: "http://localhost:4444/reverse",
                 type: "GET",
-                data: "word=" + word,
+                data: "word=" + encodeURIComponent(word),
                 success: function(response){ 
+                    $("#reverse-result").hide()
                     $("#reverse").html("<h4>" + word.substr(0, 1).toUpperCase() + word.substr(1, word.length-1) + " reversed is " + response + ".</h4>");
-                    $("#reverse-result").css("display", "block");
+                    $("#reverse-result").delay(400).slideDown("slow");
                 },
                 error: function(e){  
                     alert("error")
@@ -77,13 +84,13 @@
 <body>
     <!-- HTML goes here to accept input word and display results from the 3 AJAX calls to http://localhost:4444 -->
     <div class="container" id="main">
-        <h1>Havalo Coding Challenge</h1>
+        <h1 id="title">Havalo Coding Challenge</h1>
         <br>
         <div class="col-md-6 col-md-offset-3">
             <div class="input-group">
                 <input type="text" class="form-control" name="word" id="inputWord" placeholder="Enter a word">
                 <span class="input-group-btn">
-                    <button id="submits" onclick="submit()" class="btn btn-default" type="button">Submit</button>
+                    <button id="submits" onclick="submit()" class="btn btn-basic" type="button">Submit</button>
                 </span>
             </div>
         </div>
@@ -101,15 +108,27 @@
         </div>
     </div>
     
+    
 </body>
 <style>
+    body {
+        background-color: #252222;
+    }
+    
     #main {
         text-align: center;
+        
+    }
+    
+    #title {
+        color: #ffffff;
+        font-family: 'HelveticaNeue-UltraLight', 'Helvetica Neue UltraLight', 'Open Sans', sans-serif;
+        font-size: 3.5em;
     }
     
     .results {
         display: none;
-        background-color: #1e90ff;
+        background-color: #222ab7;
         -webkit-transition-property: background-color, color, border-color;
         -moz-transition-property: background-color, color, border-color;
         -o-transition-property: background-color, color, border-color;
@@ -122,11 +141,35 @@
         -moz-transition-timing-function: linear;
         -o-transition-timing-function: linear;
         transition-timing-function: linear;
-        color: white;
+        color: #ffffff;
+        font-family: 'HelveticaNeue-Light', 'Helvetica Neue Light', sans-serif;
     }
     
     .results:hover {
-        background-color: #49a4ff;
+        background-color: #2d38ff;
+    }
+    
+    #submits {
+        color: #ffffff;
+        background-color: #222ab7;
+        -webkit-transition-property: background-color, color, border-color;
+        -moz-transition-property: background-color, color, border-color;
+        -o-transition-property: background-color, color, border-color;
+        transition-property: background-color, color, border-color;
+        -webkit-transition-duration: 0.25s;
+        -moz-transition-duration: 0.25s;
+        -o-transition-duration: 0.25s;
+        transition-duration: 0.25s;
+        -webkit-transition-timing-function: linear;
+        -moz-transition-timing-function: linear;
+        -o-transition-timing-function: linear;
+        transition-timing-function: linear;
+        border-style: solid;
+        border-color: #dcdcdc;
+    }
+    
+    #submits:hover {
+        background-color: #2d38ff;
     }
     
     

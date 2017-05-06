@@ -4,6 +4,7 @@ import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
+import java.net.URLDecoder;
 
 public final class HavaloCodingChallenge {
 
@@ -20,8 +21,13 @@ public final class HavaloCodingChallenge {
      */
     public static boolean isPalindrome(String word) {
         // TODO: your java code here!
-        word = word.replaceAll("%20", " ");
-        word = word.replaceAll("%22", "\"");
+        
+        try {
+            word = java.net.URLDecoder.decode(word, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new AssertionError("UTF-8 is unknown");
+            
+        }
         int length = word.length();
 
         for (int i = 0; i < length/2; i++) {
@@ -42,8 +48,13 @@ public final class HavaloCodingChallenge {
      */
     public static boolean containsDuplicateCharacters(String word) {
         // TODO: your java code here!
-        word = word.replaceAll("%20", " ");
-        word = word.replaceAll("%22", "\"");
+        
+        try {
+            word = java.net.URLDecoder.decode(word, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new AssertionError("UTF-8 is unknown");
+            
+        }
         Map<Character, Integer> map = new HashMap<Character, Integer>();
         for (int i = 0; i < word.length(); i++) {
             if (map.containsKey(word.charAt(i))) {
@@ -64,8 +75,12 @@ public final class HavaloCodingChallenge {
      */
     public static String reverseWord(String word) {
         // TODO: your java code here!
-        word = word.replaceAll("%20", " ");
-        word = word.replaceAll("%22", "\"");
+        try {
+            word = java.net.URLDecoder.decode(word, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new AssertionError("UTF-8 is unknown");
+            
+        }
         
         String reversedWord = "";
         for (int i = word.length()-1; i >= 0; i--) {
