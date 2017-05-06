@@ -71,7 +71,7 @@ public final class HavaloCodingChallenge {
             if (map.containsKey(word.charAt(i))) {
                 return true;
             } else {
-            //Insert character into the map
+                //Insert character into the map
                 map.put(word.charAt(i), 0);
             }
         }
