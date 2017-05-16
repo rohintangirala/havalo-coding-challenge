@@ -6,4 +6,4 @@ To start web server, run this command in a OS X/MacOS/Linux terminal:
 ```bash
 make
 ```
-Visit http://localhost:4444 in a web browser
+Then visit http://localhost:4444 in a web browser
