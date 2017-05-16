@@ -1,3 +1,3 @@
 # Havalo Coding Challenge
 
-Created by Rohin Tangirala
+Simple web app with Java backend and AJAX calls.
