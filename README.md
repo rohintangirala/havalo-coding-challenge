@@ -2,7 +2,7 @@
 
 Simple web app with Java backend and AJAX
 
-To start web server:
+To start web server, run this command in a OS X/MacOS/Linux terminal:
 ```bash
 make
 ```
